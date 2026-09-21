@@ -61,17 +61,8 @@ form.addEventListener('submit', function (e) {
 
   payBtn.disabled = true;
   payBtn.textContent = 'processing...';
-  document.body.style.overflow = 'hidden';
-  document.body.style.position = 'fixed';
-  document.body.style.width = '100%';
 
   const reference = 'BOWEN-' + Date.now() + '-' + Math.floor(Math.random() * 100000);
-
-  function unlockScroll() {
-    document.body.style.overflow = '';
-    document.body.style.position = '';
-    document.body.style.width = '';
-  }
 
   const handler = PaystackPop.setup({
     key: PAYSTACK_PUBLIC_KEY,
@@ -84,7 +75,6 @@ form.addEventListener('submit', function (e) {
       ]
     },
     callback: function (response) {
-      unlockScroll();
       // NOTE: this fires client-side once Paystack reports success.
       // There is no server here to independently re-verify the transaction —
       // see the README for why that matters before this handles real money
@@ -92,7 +82,6 @@ form.addEventListener('submit', function (e) {
       showResult(true, response.reference, amount, email);
     },
     onClose: function () {
-      unlockScroll();
       payBtn.disabled = false;
       payBtn.textContent = 'pay now';
     }
